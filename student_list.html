@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>Kabi Nazrul Govt. College - Registration List</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f2f4f7;
+    margin: 0;
+    padding: 30px 15px;
+    color: #222;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 25px 30px 35px;
+  }
+  h1, h2, h3 {
+    text-align: center;
+    margin: 4px 0;
+  }
+  h1 { font-size: 20px; }
+  h2 { font-size: 17px; font-weight: 600; }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 18px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 14.5px;
+  }
+  th, td {
+    border: 1px solid #cbd2d9;
+    padding: 8px 10px;
+    text-align: left;
+  }
+  th {
+    background: #2c3e50;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+  }
+  td.sl, td.dob {
+    text-align: center;
+    white-space: nowrap;
+  }
+  tr:nth-child(even) { background: #f8f9fb; }
+  tr:hover { background: #eef2f7; }
+  td.reg {
+    text-align: center;
+    font-weight: 600;
+    color: #1a5fb4;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    user-select: none;
+  }
+  td.reg:hover { background: #dce9fb; }
+  td.reg.copied {
+    background: #2ecc71 !important;
+    color: #fff !important;
+  }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #2c3e50;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 999;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .hint {
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Kabi Nazrul Govt. College, Dhaka</h1>
+  <h2>Honours 1st Year (Session: 2023-2024)</h2>
+  <h3>Department of Arabic — Student's Registration Number</h3>
+  <p class="hint">👆 রেজিস্ট্রেশন নম্বরের উপর ক্লিক করলে সেটি কপি হয়ে যাবে</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Sl</th>
+        <th>Name</th>
+        <th>Date of Birth</th>
+        <th>Registration No</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+    </tbody>
+  </table>
+</div>
+
+<div class="toast" id="toast">কপি হয়েছে!</div>
+
+<script>
+const data = [
+["1","MD. NUMAN MAJUMDAR","19-01-06","2023-539-501"],
+["2","SAIDUR RAHMAN MASRUR","16-06-05","2023-648-014"],
+["3","TOAHA ABDULLAH","09-11-05","2023-548-015"],
+["4","ABDULLAH AL MAMUN BHUIYAN","29-12-05","2023-448-016"],
+["5","SUMAYA ISLAM","10-07-05","2023-348-017"],
+["6","MD. NUR NOBI ISLAM","01-12-05","2023-248-018"],
+["7","MD. AZIZUR RAHMAN","14-09-03","2023-148-019"],
+["8","GAZI MD. JUNAYED HOSSEN","04-09-04","2023-948-020"],
+["9","SAD HASAN SAKY","13-07-04","2023-848-021"],
+["10","SAMSUN NAHAR LIZA","01-05-06","2023-748-022"],
+["11","MD. RIZWAN","23-07-05","2023-648-023"],
+["12","SHAKIR AHMAD JAKWAN","10-10-05","2023-548-024"],
+["13","MD. SOHUN HOSSAN","20-06-06","2023-448-025"],
+["14","RAJIA SULTANA","16-10-04","2023-348-026"],
+["15","MD. AL MAMUN","01-01-06","2023-248-027"],
+["16","MD. MUNNA AJIJ","04-05-05","2023-148-028"],
+["17","MD. ABDULLAH","01-06-06","2023-048-029"],
+["18","MD. SHAKIL AHMED","25-01-01","2023-848-030"],
+["19","MD. ARAFAT ISLAM","11-11-04","2023-748-031"],
+["20","TOFAJJAL HOSSAIN","03-08-05","2023-648-032"],
+["21","ABU JUBAID AHAMMAD","24-08-05","2023-548-033"],
+["22","LOKMAN HAKIM","12-11-04","2023-448-034"],
+["23","MD. ASRAF","21-09-01","2023-348-035"],
+["24","MD. AL AMIN","01-10-04","2023-248-036"],
+["25","MUJAHID HOSSEN","02-08-03","2023-148-037"],
+["26","JAKIR","17-05-02","2023-048-038"],
+["27","IMRAN HOSSAIN","01-02-03","2023-948-039"],
+["28","MEHEDI HOSSAIN TANVIR","22-08-04","2023-748-040"],
+["29","MD. SAEID ANOWAR TUHIN","10-03-05","2023-648-041"],
+["30","FARZANA AKTER","01-01-04","2023-548-042"],
+["31","MD. YEASIN","05-03-00","2023-448-043"],
+["32","AIREN AKTER","01-11-02","2023-348-044"],
+["33","MD. SAJIB HOSSEN","01-01-06","2023-248-045"],
+["34","MOKHLESUR RAHMAN","10-01-05","2023-148-046"],
+["35","SAYDUL ISLAM","10-01-02","2023-048-047"],
+["36","ISRAT ZAHAN EVA","05-03-03","2023-948-048"],
+["37","HASIB KHAN RATUL","08-12-02","2023-848-049"],
+["38","HABIBUR RAHMAN","21-09-04","2023-648-050"],
+["39","AFSANA MIM","16-01-06","2023-548-051"],
+["40","MD. EAKUB ALI","01-01-05","2023-448-052"],
+["41","MD. NAIME MIRDA","01-11-06","2023-348-053"],
+["42","MD. ASHIQUL ISLAM","22-02-05","2023-248-054"],
+["43","MEHEDI HASAN RATUL","07-12-04","2023-148-055"],
+["44","MD. HABIB HOSSAIN","08-09-03","2023-048-056"],
+["45","SHARIFUL ISLAM","28-12-04","2023-948-057"],
+["46","EVA AKTER","22-01-05","2023-848-058"],
+["47","ISMAIL HOSSAIN","22-04-04","2023-748-059"],
+["48","MD. JIHADUL ISLAM","21-02-05","2023-548-060"],
+["49","MD. SEFAYET ULLAH","27-11-05","2023-448-061"],
+["50","MD. EMRAN","02-01-03","2023-348-062"],
+["51","MD. TAMIM","18-06-04","2023-248-063"],
+["52","C. M . SAKIB AL HABIB","18-01-06","2023-148-064"],
+["53","SHK. ASIKUR RAHMAN","01-01-05","2023-048-065"],
+["54","MARIA AKTER","02-11-03","2023-948-066"],
+["55","MD. HABIBULLAH","01-01-04","2023-848-067"],
+["56","MD. ABDULLAH","03-01-06","2023-748-068"],
+["57","MUJAHED","01-01-04","2023-648-069"],
+["58","MD. RAKIBUL HASAN","03-04-04","2023-952-692"]
+];
+
+const tbody = document.getElementById('tbody');
+const toast = document.getElementById('toast');
+
+data.forEach(row => {
+  const regNoHyphen = row[3].replace(/-/g, '');
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="sl">${row[0]}</td>
+    <td>${row[1]}</td>
+    <td class="dob">${row[2]}</td>
+    <td class="reg" data-reg="${regNoHyphen}">${regNoHyphen}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+let toastTimer;
+document.addEventListener('click', function(e) {
+  const cell = e.target.closest('.reg');
+  if (!cell) return;
+  const text = cell.getAttribute('data-reg');
+
+  const doCopyFeedback = () => {
+    cell.classList.add('copied');
+    setTimeout(() => cell.classList.remove('copied'), 600);
+    toast.textContent = text + ' কপি হয়েছে!';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1500);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(doCopyFeedback).catch(() => {
+      fallbackCopy(text);
+      doCopyFeedback();
+    });
+  } else {
+    fallbackCopy(text);
+    doCopyFeedback();
+  }
+});
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch (err) {}
+  document.body.removeChild(ta);
+}
+</script>
+
+</body>
+</html>
